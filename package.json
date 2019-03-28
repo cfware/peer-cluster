@@ -1,0 +1,48 @@
+{
+	"name": "@cfware/peer-cluster",
+	"version": "0.1.0",
+	"description": "Websocket all-to-all connectivity cluster",
+	"main": "lib/peer-cluster.js",
+	"scripts": {
+		"release": "standard-version --sign",
+		"test": "xo && nyc ava"
+	},
+	"engines": {
+		"node": ">=8"
+	},
+	"author": "Corey Farrell",
+	"license": "MIT",
+	"files": [
+		"lib/*.js"
+	],
+	"keywords": [],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/cfware/peer-cluster.git"
+	},
+	"bugs": {
+		"url": "https://github.com/cfware/peer-cluster/issues"
+	},
+	"homepage": "https://github.com/cfware/peer-cluster#readme",
+	"dependencies": {
+		"arrify": "^1.0.1",
+		"ws": "^6.2.1"
+	},
+	"devDependencies": {
+		"ava": "^1.4.1",
+		"delay": "^4.1.0",
+		"nyc": "^13.3.0",
+		"p-event": "^4.0.0",
+		"standard-version": "^5.0.2",
+		"xo": "^0.24.0"
+	},
+	"nyc": {
+		"all": true,
+		"check-coverage": true,
+		"per-file": true,
+		"lines": 100,
+		"statements": 100,
+		"functions": 100,
+		"branches": 100
+	}
+}
