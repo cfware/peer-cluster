@@ -32,9 +32,11 @@
 	"devDependencies": {
 		"@babel/cli": "^7.2.3",
 		"@babel/core": "^7.4.0",
+		"@babel/plugin-proposal-class-properties": "^7.4.0",
 		"@babel/plugin-transform-modules-commonjs": "^7.4.0",
 		"@babel/register": "^7.4.0",
 		"ava": "^1.4.1",
+		"babel-eslint": "^10.0.1",
 		"babel-plugin-istanbul": "^5.1.1",
 		"cross-env": "^5.2.0",
 		"delay": "^4.1.0",
@@ -55,6 +57,24 @@
 		"sourceMap": false,
 		"require": [
 			"@babel/register"
+		],
+		"include": [
+			"lib/*.js"
 		]
+	},
+	"xo": {
+		"parser": "babel-eslint",
+		"env": {
+			"es6": true
+		},
+		"rules": {
+			"lines-between-class-members": [
+				"error",
+				"always",
+				{
+					"exceptAfterSingleLine": true
+				}
+			]
+		}
 	}
 }

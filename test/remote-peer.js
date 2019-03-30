@@ -28,7 +28,6 @@ test('constructor', t => {
 	t.is(remotePeer.cluster, null);
 	t.is(remotePeer.peerId, 'remote');
 	t.is(remotePeer.origin, 'ws://remotehost/');
-	t.is(remotePeer.psk, 'psk');
 	t.false(remotePeer.connected);
 	t.false(remotePeer.stopping);
 	t.false(remotePeer.isSelf);
