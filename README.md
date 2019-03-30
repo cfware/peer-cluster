@@ -33,21 +33,12 @@ const PeerCluster = require('@cfware/peer-cluster');
 
 	const peerCluster = new PeerCluster({
 		peerId: 'server1',
-		origin: `ws://localhost:${httpd.address().port}/`
+		origin: `ws://localhost:${httpd.address().port}/`,
+		respond404: true
 	});
 
 	httpd.on('upgrade', (req, sock, head) => {
-		if (!cluster.tryUpgrade(req, sock, head)) {
-			const msg = 'Not Found';
-			sock.end(
-				`HTTP/1.1 404 ${msg}\r\n` +
-				'Connection: close\r\n' +
-				'Content-type: text/html\r\n' +
-				`Content-Length: ${msg.length}\r\n` +
-				'\r\n' +
-				msg
-			);
-		}
+		cluster.tryUpgrade(req, sock, head);
 	});
 })();
 ```

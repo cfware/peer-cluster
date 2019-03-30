@@ -3,12 +3,16 @@ import pEvent from 'p-event';
 
 import {PeerCluster} from '../..';
 
-export async function createCluster(t, pathname, peerId) {
+export async function createCluster(t, pathname, peerId, moreSettings = {}) {
 	const httpd = createServer();
 	httpd.listen(0);
 	await pEvent(httpd, 'listening');
 
-	const cluster = new PeerCluster({peerId, origin: `ws://localhost:${httpd.address().port}${pathname}`});
+	const cluster = new PeerCluster({
+		peerId,
+		origin: `ws://localhost:${httpd.address().port}${pathname}`,
+		...moreSettings
+	});
 	httpd.on('upgrade', (req, sock, head) => {
 		t.true(cluster.tryUpgrade(req, sock, head));
 	});

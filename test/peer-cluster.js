@@ -40,6 +40,7 @@ test('constructor success', t => {
 	t.is(cluster.inactivityPingRemote, 6000);
 	t.is(cluster.inactivityPingFatal, 10000);
 	t.is(cluster.handshakeTimeout, 2000);
+	t.false(cluster.respond404);
 	t.false(cluster.stopping);
 
 	t.is(cluster.selfPeer.peerId, 'local');
@@ -56,7 +57,8 @@ test('constructor success', t => {
 		inactivityPingLocal: 400,
 		inactivityPingRemote: 600,
 		inactivityPingFatal: 1000,
-		handshakeTimeout: 200
+		handshakeTimeout: 200,
+		respond404: true
 	});
 
 	t.is(cluster2.activityCheckInterval, 100);
@@ -64,6 +66,7 @@ test('constructor success', t => {
 	t.is(cluster2.inactivityPingRemote, 600);
 	t.is(cluster2.inactivityPingFatal, 1000);
 	t.is(cluster2.handshakeTimeout, 200);
+	t.true(cluster2.respond404);
 });
 
 test('addPeer', t => {
@@ -180,7 +183,8 @@ test('tryUpgrade wrong pathname', t => {
 });
 
 test('tryUpgrade rejections', async t => {
-	let got401 = 0;
+	let gotError = 0;
+	let expectError = 401;
 	const wsTest = async (url, origin) => {
 		const ws = new WebSocket(url, {
 			headers: {
@@ -190,24 +194,32 @@ test('tryUpgrade rejections', async t => {
 			perMessageDeflate: false
 		});
 		ws.on('unexpected-response', (req, res) => {
-			got401++;
-			t.is(res.statusCode, 401);
+			gotError++;
+			t.is(res.statusCode, expectError);
 		});
 
 		await pEvent(ws, 'unexpected-response');
 	};
 
-	const {cluster, httpd} = await createCluster(t, '/', 'local');
-	cluster.addPeer({peerId: 'remote', origin: 'ws://remotehost/', psk: 'psk'});
+	const {cluster, httpd} = await createCluster(t, '/', 'local', {respond404: true});
+	cluster.addPeer({
+		peerId: 'remote',
+		origin: 'ws://remotehost/',
+		psk: 'psk'
+	});
 
 	await wsTest(`${cluster.origin}?psk=psk1`, 'ws://remotehost/');
-	t.is(got401, 1);
+	t.is(gotError, 1);
 
 	await wsTest(`${cluster.origin}`, 'ws://remotehost/');
-	t.is(got401, 2);
+	t.is(gotError, 2);
 
 	await wsTest(`${cluster.origin}?psk=psk`, 'ws://remotehost2/');
-	t.is(got401, 3);
+	t.is(gotError, 3);
+
+	expectError = 404;
+	await wsTest(`${cluster.origin}404?psk=psk`, 'ws://remotehost/');
+	t.is(gotError, 4);
 
 	httpd.close();
 });
