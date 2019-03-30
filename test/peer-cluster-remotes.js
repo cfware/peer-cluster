@@ -34,7 +34,10 @@ test('connection on start', async t => {
 	let iter = 0;
 	do {
 		clusters.forEach(({cluster}) => {
-			cluster.send({from: cluster.peerId});
+			/* The second argument cluster.peers is effectively the
+			 * default but this verifies that RemotePeer objects are
+			 * accepted in the second argument of cluster.send.  */
+			cluster.send({from: cluster.peerId}, cluster.peers);
 		});
 
 		await delay(100); // eslint-disable-line no-await-in-loop
