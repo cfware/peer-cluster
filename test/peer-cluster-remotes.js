@@ -119,15 +119,14 @@ test('tryUpgrade success', async t => {
 	cluster.start();
 	await delay(500);
 
-	t.true(remote.inactiveTime < 100);
+	t.is(Math.round(remote.inactiveTime / 1000), 0);
 	t.is(gotPing, 0);
 
 	await delay(5000);
 	t.is(gotPing, 0);
-	t.true(Math.abs(remote.inactiveTime - 5000) < 100);
+	t.is(Math.round(remote.inactiveTime / 1000), 5);
 
 	await delay(1000);
-	t.log(remote.inactiveTime);
 	t.is(gotPing, 1);
 	t.is(remote.inactiveTime, 0);
 
@@ -171,15 +170,14 @@ test('tryOutbound ping', async t => {
 		gotPing++;
 	});
 
-	t.true(remote.inactiveTime < 100);
+	t.is(Math.round(remote.inactiveTime / 1000), 0);
 	t.is(gotPing, 0);
 
 	await delay(3000);
 	t.is(gotPing, 0);
-	t.true(Math.abs(remote.inactiveTime - 3000) < 100);
+	t.is(Math.round(remote.inactiveTime / 1000), 3);
 
 	await delay(1000);
-	t.log(remote.inactiveTime);
 	t.is(gotPing, 1);
 	t.is(remote.inactiveTime, 0);
 
