@@ -1,7 +1,7 @@
 import {createServer} from 'http';
 import pEvent from 'p-event';
 
-import {PeerCluster} from '../..';
+import {PeerCluster} from '../../lib/peer-cluster';
 
 export async function createCluster(t, pathname, peerId, moreSettings = {}) {
 	const httpd = createServer();

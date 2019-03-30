@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import SelfPeer from '../lib/self-peer';
+import {SelfPeer} from '../lib/self-peer';
 import {peerStop} from '../lib/protected-symbols';
 
 import {filterMeta} from './helpers/filter-coverage';

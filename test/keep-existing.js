@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import keepExisting from '../lib/keep-existing';
+import {keepExisting} from '../lib/keep-existing';
 
 import {filterMeta} from './helpers/filter-coverage';
 

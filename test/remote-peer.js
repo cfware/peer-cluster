@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import RemotePeer from '../lib/remote-peer';
+import {RemotePeer} from '../lib/remote-peer';
 import {peerStop} from '../lib/protected-symbols';
 
 import {assertInfo} from './helpers/assert-info';

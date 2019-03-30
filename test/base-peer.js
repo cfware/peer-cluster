@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import BasePeer from '../lib/base-peer';
+import {BasePeer} from '../lib/base-peer';
 import {peerStop} from '../lib/protected-symbols';
 
 import {filterMeta} from './helpers/filter-coverage';

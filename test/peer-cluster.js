@@ -3,7 +3,7 @@ import delay from 'delay';
 import pEvent from 'p-event';
 import WebSocket from 'ws';
 
-import {PeerCluster} from '..';
+import {PeerCluster} from '../lib/peer-cluster';
 import {oninterval} from '../lib/protected-symbols';
 
 import {assertInfo} from './helpers/assert-info';
