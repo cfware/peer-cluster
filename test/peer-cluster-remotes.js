@@ -24,12 +24,19 @@ test('connection on start', async t => {
 
 	testPeer.tryOutbound();
 	t.is(testPeer[outboundWS], ws);
+	const connected = new Set();
+	clusters.forEach(({cluster}) => {
+		cluster
+			.on('connected', peer => connected.add(peer))
+			.on('disconnected', peer => connected.delete(peer));
+	});
 
-	// BUGBUG: need connected events
 	await delay(100);
 	clusters.forEach(({cluster}) => {
+		t.true(connected.has(cluster.peers[0]));
 		t.true(cluster.peers[0].connected);
 	});
+	t.is(connected.size, 2);
 
 	let iter = 0;
 	do {
@@ -50,6 +57,7 @@ test('connection on start', async t => {
 		clusters.forEach(({cluster}) => {
 			t.false(cluster.peers[0].connected);
 		});
+		t.is(connected.size, iter ? 0 : 2);
 		iter++;
 	} while (iter < 2);
 });

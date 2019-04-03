@@ -28,7 +28,7 @@ export async function createClusters(t, count) {
 	const clusters = await Promise.all(new Array(count).fill().map((item, idx) => createCluster(t, '/', `server${idx + 1}`)));
 	clusters.forEach(clusterObj1 => {
 		clusterObj1.msgs = [];
-		clusterObj1.cluster.on('receive', (message, {peerId}) => {
+		clusterObj1.cluster.on('receive', ({peerId}, message) => {
 			clusterObj1.msgs.push({message, peerId});
 		});
 

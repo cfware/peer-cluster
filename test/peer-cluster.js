@@ -72,9 +72,12 @@ test('constructor success', t => {
 test('addPeer', t => {
 	const cluster = new PeerCluster({peerId: 'local', origin: 'ws://localhost/'});
 
-	// BUGBUG: add error info
-	t.throws(() => cluster.addPeer({peerId: 'local', origin: 'ws://local/', psk: 'psk'}));
-	t.throws(() => cluster.addPeer({peerId: 'localhost', origin: 'ws://localhost/', psk: 'psk'}));
+	const localServerError = {
+		instanceOf: Error,
+		message: 'addPeer cannot match local server'
+	};
+	t.throws(() => cluster.addPeer({peerId: 'local', origin: 'ws://local/', psk: 'psk'}), localServerError);
+	t.throws(() => cluster.addPeer({peerId: 'localhost', origin: 'ws://localhost/', psk: 'psk'}), localServerError);
 
 	const remotePeer = cluster.addPeer({peerId: 'remote', origin: 'ws://remotehost/', psk: 'psk'});
 
@@ -83,8 +86,12 @@ test('addPeer', t => {
 	t.is(cluster.peers.length, 1);
 	t.is(cluster.findPeer('remote'), remotePeer);
 
-	t.throws(() => cluster.addPeer({peerId: 'remote2', origin: 'ws://remotehost/', psk: 'psk'}));
-	t.throws(() => cluster.addPeer({peerId: 'remote', origin: 'ws://remotehost2/', psk: 'psk'}));
+	const remoteServerError = {
+		instanceOf: Error,
+		message: 'Duplicate peerId or origin'
+	};
+	t.throws(() => cluster.addPeer({peerId: 'remote2', origin: 'ws://remotehost/', psk: 'psk'}), remoteServerError);
+	t.throws(() => cluster.addPeer({peerId: 'remote', origin: 'ws://remotehost2/', psk: 'psk'}), remoteServerError);
 });
 
 test('removePeer', t => {
