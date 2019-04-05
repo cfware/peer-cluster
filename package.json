@@ -26,7 +26,6 @@
 	},
 	"homepage": "https://github.com/cfware/peer-cluster#readme",
 	"dependencies": {
-		"arrify": "^1.0.1",
 		"ws": "^6.2.1"
 	},
 	"devDependencies": {
