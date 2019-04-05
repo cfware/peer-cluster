@@ -7,6 +7,5 @@ import {filterMeta} from './helpers/filter-coverage';
 filterMeta();
 
 test('export', t => {
-	t.is(typeof protectedSymbols, 'object');
-	/* BUGBUG: t.snapshot(Object.keys(protectedSymbols).sort()); */
+	t.snapshot(Object.keys(protectedSymbols).sort());
 });
