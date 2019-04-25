@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [0.2.0](https://github.com/cfware/peer-cluster/compare/v0.1.2...v0.2.0) (2019-04-25)
+
+
+### Features
+
+* Publish as ESM ([c193497](https://github.com/cfware/peer-cluster/commit/c193497))
+
+
+### BREAKING CHANGES
+
+* Require node.js 12
+
+
+
 ## [0.1.2](https://github.com/cfware/peer-cluster/compare/v0.1.1...v0.1.2) (2019-04-05)
 
 
