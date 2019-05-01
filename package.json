@@ -1,6 +1,6 @@
 {
 	"name": "@cfware/peer-cluster",
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"description": "Websocket all-to-all connectivity cluster",
 	"main": "lib/peer-cluster.js",
 	"scripts": {
