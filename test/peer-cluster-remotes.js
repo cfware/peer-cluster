@@ -8,8 +8,7 @@ import WebSocket from 'ws';
 
 import {outboundWS} from '../lib/protected-symbols';
 
-import {filterCoverage} from './helpers/filter-coverage';
-import {createCluster, createClusters, stopClusters} from './helpers/test-cluster';
+import {filterCoverage, createCluster, createClusters, stopClusters} from './_helpers';
 
 const libdir = path.resolve(__dirname, '..', 'lib');
 filterCoverage(

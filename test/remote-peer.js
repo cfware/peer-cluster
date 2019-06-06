@@ -3,8 +3,7 @@ import test from 'ava';
 import {RemotePeer} from '../lib/remote-peer';
 import {peerStop} from '../lib/protected-symbols';
 
-import {assertInfo} from './helpers/assert-info';
-import {filterMeta} from './helpers/filter-coverage';
+import {assertInfo, filterMeta} from './_helpers';
 
 filterMeta();
 

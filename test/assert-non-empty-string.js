@@ -2,8 +2,7 @@ import test from 'ava';
 
 import {assertNonEmptyString} from '../lib/assert-non-empty-string';
 
-import {assertInfo} from './helpers/assert-info';
-import {filterMeta} from './helpers/filter-coverage';
+import {assertInfo, filterMeta} from './_helpers';
 
 filterMeta();
 

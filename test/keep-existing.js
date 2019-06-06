@@ -2,7 +2,7 @@ import test from 'ava';
 
 import {keepExisting} from '../lib/keep-existing';
 
-import {filterMeta} from './helpers/filter-coverage';
+import {filterMeta} from './_helpers';
 
 filterMeta();
 

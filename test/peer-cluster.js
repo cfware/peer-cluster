@@ -6,9 +6,7 @@ import WebSocket from 'ws';
 import {PeerCluster} from '../lib/peer-cluster';
 import {oninterval} from '../lib/protected-symbols';
 
-import {assertInfo} from './helpers/assert-info';
-import {createCluster} from './helpers/test-cluster';
-import {filterMeta} from './helpers/filter-coverage';
+import {assertInfo, createCluster, filterMeta} from './_helpers';
 
 filterMeta();
 

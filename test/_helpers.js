@@ -1,7 +1,37 @@
+/* global __coverage__ */
+import path from 'path';
 import {createServer} from 'http';
+
+import test from 'ava';
 import pEvent from 'p-event';
 
-import {PeerCluster} from '../../lib/peer-cluster';
+import {PeerCluster} from '../lib/peer-cluster';
+
+export function filterCoverage(...files) {
+	if (!('NYC_CWD' in process.env)) {
+		return;
+	}
+
+	Object.keys(__coverage__ || {}).forEach(file => {
+		if (!files.includes(file)) {
+			delete __coverage__[file];
+		}
+	});
+}
+
+export function filterMeta() {
+	const file = path.basename(test.meta.file);
+	const dir = path.dirname(test.meta.file);
+
+	filterCoverage(path.resolve(dir, '..', 'lib', file));
+}
+
+export function assertInfo(fieldname) {
+	return {
+		instanceOf: TypeError,
+		message: `${fieldname} must be non-empty a string`
+	};
+}
 
 export async function createCluster(t, pathname, peerId, moreSettings = {}) {
 	const httpd = createServer();
