@@ -12,9 +12,6 @@
 	},
 	"author": "Corey Farrell",
 	"license": "MIT",
-	"files": [
-		"lib/*.js"
-	],
 	"keywords": [],
 	"repository": {
 		"type": "git",
