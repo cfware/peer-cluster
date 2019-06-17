@@ -4,10 +4,10 @@ import {SelfPeer} from '../lib/self-peer.mjs';
 import {peerStop} from '../lib/protected-symbols.mjs';
 
 t.test('lifecycle', async t => {
-	const cluster = {peerId: 'local', origin: 'ws://localhost/'};
+	const cluster = {peerID: 'local', origin: 'ws://localhost/'};
 	const peer = new SelfPeer(cluster);
 
-	t.equal(peer.peerId, cluster.peerId);
+	t.equal(peer.peerID, cluster.peerID);
 	t.equal(peer.origin, cluster.origin);
 
 	let gotMessage = 0;

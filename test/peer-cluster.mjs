@@ -16,23 +16,23 @@ t.test('constructor errors', async t => {
 		constructor: TypeError,
 		message: /Cannot read property '[^']*' of undefined/u
 	});
-	t.throws(() => new PeerCluster({}), assertInfo('peerId'));
+	t.throws(() => new PeerCluster({}), assertInfo('peerID'));
 
-	t.throws(() => new PeerCluster({origin: 'a'}), assertInfo('peerId'));
-	t.throws(() => new PeerCluster({peerId: true, origin: 'a'}), assertInfo('peerId'));
-	t.throws(() => new PeerCluster({peerId: '', origin: 'a'}), assertInfo('peerId'));
+	t.throws(() => new PeerCluster({origin: 'a'}), assertInfo('peerID'));
+	t.throws(() => new PeerCluster({peerID: true, origin: 'a'}), assertInfo('peerID'));
+	t.throws(() => new PeerCluster({peerID: '', origin: 'a'}), assertInfo('peerID'));
 
-	t.throws(() => new PeerCluster({peerId: 'a'}), assertInfo('origin'));
-	t.throws(() => new PeerCluster({peerId: 'a', origin: true}), assertInfo('origin'));
-	t.throws(() => new PeerCluster({peerId: 'a', origin: ''}), assertInfo('origin'));
+	t.throws(() => new PeerCluster({peerID: 'a'}), assertInfo('origin'));
+	t.throws(() => new PeerCluster({peerID: 'a', origin: true}), assertInfo('origin'));
+	t.throws(() => new PeerCluster({peerID: 'a', origin: ''}), assertInfo('origin'));
 });
 
 t.test('constructor success', async t => {
-	const cluster = new PeerCluster({peerId: 'local', origin: 'ws://localhost/'});
+	const cluster = new PeerCluster({peerID: 'local', origin: 'ws://localhost/'});
 
 	t.equal(cluster.findPeer('local'), cluster.selfPeer);
 	t.equal(cluster.pathname, '/');
-	t.equal(cluster.peerId, 'local');
+	t.equal(cluster.peerID, 'local');
 	t.equal(cluster.origin, 'ws://localhost/');
 	t.equal(cluster.activityCheckInterval, 1000);
 	t.equal(cluster.inactivityPingLocal, 4000);
@@ -42,7 +42,7 @@ t.test('constructor success', async t => {
 	t.equal(cluster.respond404, false);
 	t.equal(cluster.stopping, false);
 
-	t.equal(cluster.selfPeer.peerId, 'local');
+	t.equal(cluster.selfPeer.peerID, 'local');
 	t.equal(cluster.selfPeer.origin, 'ws://localhost/');
 	t.equal(cluster.peers.length, 0);
 
@@ -50,7 +50,7 @@ t.test('constructor success', async t => {
 	t.equal(cluster.stopping, false);
 
 	const cluster2 = new PeerCluster({
-		peerId: 'local',
+		peerID: 'local',
 		origin: 'ws://localhost/',
 		activityCheckInterval: 100,
 		inactivityPingLocal: 400,
@@ -69,27 +69,27 @@ t.test('constructor success', async t => {
 });
 
 t.test('addPeer', async t => {
-	const cluster = new PeerCluster({peerId: 'local', origin: 'ws://localhost/'});
+	const cluster = new PeerCluster({peerID: 'local', origin: 'ws://localhost/'});
 
 	const localServerError = new Error('addPeer cannot match local server');
-	t.throws(() => cluster.addPeer({peerId: 'local', origin: 'ws://local/', psk: 'psk'}), localServerError);
-	t.throws(() => cluster.addPeer({peerId: 'localhost', origin: 'ws://localhost/', psk: 'psk'}), localServerError);
+	t.throws(() => cluster.addPeer({peerID: 'local', origin: 'ws://local/', psk: 'psk'}), localServerError);
+	t.throws(() => cluster.addPeer({peerID: 'localhost', origin: 'ws://localhost/', psk: 'psk'}), localServerError);
 
-	const remotePeer = cluster.addPeer({peerId: 'remote', origin: 'ws://remotehost/', psk: 'psk'});
+	const remotePeer = cluster.addPeer({peerID: 'remote', origin: 'ws://remotehost/', psk: 'psk'});
 
 	t.equal(remotePeer.cluster, cluster);
 	t.equal(remotePeer.isSelf, false);
 	t.equal(cluster.peers.length, 1);
 	t.equal(cluster.findPeer('remote'), remotePeer);
 
-	const remoteServerError = new Error('Duplicate peerId or origin');
-	t.throws(() => cluster.addPeer({peerId: 'remote2', origin: 'ws://remotehost/', psk: 'psk'}), remoteServerError);
-	t.throws(() => cluster.addPeer({peerId: 'remote', origin: 'ws://remotehost2/', psk: 'psk'}), remoteServerError);
+	const remoteServerError = new Error('Duplicate peerID or origin');
+	t.throws(() => cluster.addPeer({peerID: 'remote2', origin: 'ws://remotehost/', psk: 'psk'}), remoteServerError);
+	t.throws(() => cluster.addPeer({peerID: 'remote', origin: 'ws://remotehost2/', psk: 'psk'}), remoteServerError);
 });
 
 t.test('removePeer', async t => {
-	const cluster = new PeerCluster({peerId: 'local', origin: 'ws://localhost/'});
-	const remotePeer = cluster.addPeer({peerId: 'remote', origin: 'ws://remotehost/', psk: 'psk'});
+	const cluster = new PeerCluster({peerID: 'local', origin: 'ws://localhost/'});
+	const remotePeer = cluster.addPeer({peerID: 'remote', origin: 'ws://remotehost/', psk: 'psk'});
 
 	t.equal(cluster.findPeer('remote'), remotePeer);
 
@@ -103,7 +103,7 @@ t.test('removePeer', async t => {
 });
 
 t.test('stand alone', async t => {
-	const cluster = new PeerCluster({peerId: 'local', origin: 'ws://localhost/'});
+	const cluster = new PeerCluster({peerID: 'local', origin: 'ws://localhost/'});
 	const local = cluster.selfPeer;
 	const data = {name: 'value'};
 	let messageCount = 0;
@@ -127,7 +127,7 @@ t.test('stand alone', async t => {
 	cluster.send(data, []);
 	t.equal(messageCount, 0);
 
-	t.throws(() => cluster.send(data, ['unknown']), new Error('PeerId \'unknown\' not found'));
+	t.throws(() => cluster.send(data, ['unknown']), new Error('Could not find peerID \'unknown\''));
 	t.throws(() => cluster.send(data, [{}]), new TypeError('Invalid peer at index 0'));
 
 	cluster.send(data, ['local']);
@@ -164,8 +164,8 @@ t.test('stand alone', async t => {
 });
 
 t.test('tryUpgrade wrong pathname', async t => {
-	t.equal((new PeerCluster({peerId: 'local', origin: 'ws://localhost/'})).tryUpgrade(null, null, null, {pathname: '/path'}), false);
-	t.equal((new PeerCluster({peerId: 'local', origin: 'ws://localhost/path'})).tryUpgrade(null, null, null, {pathname: '/'}), false);
+	t.equal((new PeerCluster({peerID: 'local', origin: 'ws://localhost/'})).tryUpgrade(null, null, null, {pathname: '/path'}), false);
+	t.equal((new PeerCluster({peerID: 'local', origin: 'ws://localhost/path'})).tryUpgrade(null, null, null, {pathname: '/'}), false);
 });
 
 t.test('tryUpgrade rejections', async t => {
@@ -189,7 +189,7 @@ t.test('tryUpgrade rejections', async t => {
 
 	const {cluster, httpd} = await createCluster(t, '/', 'local', {respond404: true});
 	cluster.addPeer({
-		peerId: 'remote',
+		peerID: 'remote',
 		origin: 'ws://remotehost/',
 		psk: 'psk'
 	});

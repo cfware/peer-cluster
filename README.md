@@ -31,7 +31,7 @@ import {PeerCluster} from '@cfware/peer-cluster';
 	await pEvent(httpd, 'listening');
 
 	const peerCluster = new PeerCluster({
-		peerId: 'server1',
+		peerID: 'server1',
 		origin: `ws://localhost:${httpd.address().port}/`,
 		respond404: true
 	});

@@ -13,7 +13,7 @@ const delay = promisify(setTimeout);
 
 t.test('connection on start', async t => {
 	const clusters = await createClusters(t, 2);
-	const msgsFrom = from => [{message: {from}, peerId: from}];
+	const msgsFrom = from => [{message: {from}, peerID: from}];
 	const testPeer = clusters[0].cluster.peers[0];
 	const ws = testPeer[outboundWS];
 
@@ -39,7 +39,7 @@ t.test('connection on start', async t => {
 			/* The second argument cluster.peers is effectively the
 			 * default but this verifies that RemotePeer objects are
 			 * accepted in the second argument of cluster.send.  */
-			cluster.send({from: cluster.peerId}, cluster.peers);
+			cluster.send({from: cluster.peerID}, cluster.peers);
 		});
 
 		await delay(100); // eslint-disable-line no-await-in-loop
@@ -83,7 +83,7 @@ t.test('stop while connecting', async t => {
 
 t.test('tryUpgrade success', async t => {
 	const {cluster, httpd} = await createCluster(t, '/', 'local');
-	const remote = cluster.addPeer({peerId: 'remote', origin: 'ws://remotehost/', psk: 'psk2'});
+	const remote = cluster.addPeer({peerID: 'remote', origin: 'ws://remotehost/', psk: 'psk2'});
 
 	const ws = new WebSocket(`${cluster.origin}?psk=psk2`, {
 		headers: {
@@ -162,7 +162,7 @@ t.test('tryOutbound ping', async t => {
 
 	const {cluster, httpd} = await createCluster(t, '/', 'local');
 	const remote = cluster.addPeer({
-		peerId: 'remote',
+		peerID: 'remote',
 		origin: `ws://localhost:${httpdTest.address().port}/`,
 		psk: 'psk2'
 	});

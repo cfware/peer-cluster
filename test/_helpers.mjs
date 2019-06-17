@@ -7,13 +7,13 @@ export function assertInfo(fieldname) {
 	return new TypeError(`${fieldname} must be non-empty a string`);
 }
 
-export async function createCluster(t, pathname, peerId, moreSettings = {}) {
+export async function createCluster(t, pathname, peerID, moreSettings = {}) {
 	const httpd = createServer();
 	httpd.listen(0);
 	await once(httpd, 'listening');
 
 	const cluster = new PeerCluster({
-		peerId,
+		peerID,
 		origin: `ws://localhost:${httpd.address().port}${pathname}`,
 		...moreSettings
 	});
@@ -24,8 +24,8 @@ export async function createCluster(t, pathname, peerId, moreSettings = {}) {
 	return {cluster, httpd};
 }
 
-export function addToCluster(cluster, psk, {peerId, origin}) {
-	return cluster.addPeer({peerId, origin, psk});
+export function addToCluster(cluster, psk, {peerID, origin}) {
+	return cluster.addPeer({peerID, origin, psk});
 }
 
 export async function createClusters(t, count) {
@@ -36,8 +36,8 @@ export async function createClusters(t, count) {
 
 	clusters.forEach(clusterObject1 => {
 		clusterObject1.msgs = [];
-		clusterObject1.cluster.on('receive', ({peerId}, message) => {
-			clusterObject1.msgs.push({message, peerId});
+		clusterObject1.cluster.on('receive', ({peerID}, message) => {
+			clusterObject1.msgs.push({message, peerID});
 		});
 
 		clusters.filter(a => a !== clusterObject1).forEach(clusterObject2 => {
