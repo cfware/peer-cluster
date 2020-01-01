@@ -1,12 +1,10 @@
-import test from 'ava';
+import t from 'libtap';
 
-import {assertNonEmptyString} from '../lib/assert-non-empty-string';
+import {assertNonEmptyString} from '../lib/assert-non-empty-string.mjs';
 
-import {assertInfo, filterMeta} from './_helpers';
+import {assertInfo} from './_helpers.mjs';
 
-filterMeta();
-
-test('not a string', t => {
+t.test('not a string', async t => {
 	t.throws(() => assertNonEmptyString(undefined, 'field1'), assertInfo('field1'));
 	t.throws(() => assertNonEmptyString(null, 'field2'), assertInfo('field2'));
 	t.throws(() => assertNonEmptyString(false, 'field3'), assertInfo('field3'));
@@ -16,10 +14,10 @@ test('not a string', t => {
 	t.throws(() => assertNonEmptyString([], 'field7'), assertInfo('field7'));
 });
 
-test('empty string', t => {
+t.test('empty string', async t => {
 	t.throws(() => assertNonEmptyString('', 'field8'), assertInfo('field8'));
 });
 
-test('non-empty string', t => {
-	t.notThrows(() => assertNonEmptyString('a', 'field9'));
+t.test('non-empty string', async () => {
+	assertNonEmptyString('a', 'field9');
 });

@@ -1,28 +1,24 @@
-import path from 'path';
 import {createServer} from 'http';
+import {promisify} from 'util';
+import {once} from 'events';
 
-import test from 'ava';
-import delay from 'delay';
-import pEvent from 'p-event';
+import t from 'libtap';
 import WebSocket from 'ws';
 
-import {outboundWS} from '../lib/protected-symbols';
+import {outboundWS} from '../lib/protected-symbols.mjs';
 
-import {filterCoverage, createCluster, createClusters, stopClusters} from './_helpers';
+import {createCluster, createClusters, stopClusters} from './_helpers.mjs';
 
-const libdir = path.resolve(__dirname, '..', 'lib');
-filterCoverage(
-	path.join(libdir, 'peer-cluster.js'),
-	path.join(libdir, 'remote-peer.js')
-);
-test('connection on start', async t => {
+const delay = promisify(setTimeout);
+
+t.test('connection on start', async t => {
 	const clusters = await createClusters(t, 2);
 	const msgsFrom = from => [{message: {from}, peerId: from}];
 	const testPeer = clusters[0].cluster.peers[0];
 	const ws = testPeer[outboundWS];
 
 	testPeer.tryOutbound();
-	t.is(testPeer[outboundWS], ws);
+	t.equal(testPeer[outboundWS], ws);
 	const connected = new Set();
 	clusters.forEach(({cluster}) => {
 		cluster
@@ -32,10 +28,10 @@ test('connection on start', async t => {
 
 	await delay(100);
 	clusters.forEach(({cluster}) => {
-		t.true(connected.has(cluster.peers[0]));
-		t.true(cluster.peers[0].connected);
+		t.ok(connected.has(cluster.peers[0]));
+		t.equal(cluster.peers[0].connected, true);
 	});
-	t.is(connected.size, 2);
+	t.equal(connected.size, 2);
 
 	let iter = 0;
 	do {
@@ -47,21 +43,21 @@ test('connection on start', async t => {
 		});
 
 		await delay(100); // eslint-disable-line no-await-in-loop
-		t.deepEqual(clusters.map(a => a.msgs), [
+		t.same(clusters.map(a => a.msgs), [
 			msgsFrom('server2'),
 			msgsFrom('server1')
 		]);
 
 		stopClusters(clusters);
 		clusters.forEach(({cluster}) => {
-			t.false(cluster.peers[0].connected);
+			t.equal(cluster.peers[0].connected, false);
 		});
-		t.is(connected.size, iter ? 0 : 2);
+		t.equal(connected.size, iter ? 0 : 2);
 		iter++;
 	} while (iter < 2);
 });
 
-test('stop while connecting', async t => {
+t.test('stop while connecting', async t => {
 	const clusters = await createClusters(t, 2);
 	const peers = [];
 	clusters.map(c => c.cluster).forEach(cluster => {
@@ -69,23 +65,23 @@ test('stop while connecting', async t => {
 	});
 	const wsList = peers.map(peer => peer[outboundWS]).filter(ws => ws);
 	wsList.forEach(ws => {
-		t.is(ws.readyState, 0);
+		t.equal(ws.readyState, 0);
 	});
 
 	stopClusters(clusters);
 
 	wsList.forEach(ws => {
-		t.is(ws.readyState, 2);
+		t.equal(ws.readyState, 2);
 	});
 
 	await delay(100);
 
 	wsList.forEach(ws => {
-		t.is(ws.readyState, 3);
+		t.equal(ws.readyState, 3);
 	});
 });
 
-test('tryUpgrade success', async t => {
+t.test('tryUpgrade success', async t => {
 	const {cluster, httpd} = await createCluster(t, '/', 'local');
 	const remote = cluster.addPeer({peerId: 'remote', origin: 'ws://remotehost/', psk: 'psk2'});
 
@@ -97,12 +93,12 @@ test('tryUpgrade success', async t => {
 		perMessageDeflate: false
 	});
 
-	const msg = {name: 'value'};
-	let gotMsg = 0;
+	const message = {name: 'value'};
+	let gotMessage = 0;
 	let gotPing = 0;
 	let gotPong = 0;
 	ws
-		.on('unexpected-response', (req, res) => t.fail(`unexpected-response: ${res.statusCode}`))
+		.on('unexpected-response', (request, response) => t.fail(`unexpected-response: ${response.statusCode}`))
 		.on('error', error => t.fail(`error: ${error.message}`))
 		.on('pong', () => {
 			gotPong++;
@@ -111,44 +107,44 @@ test('tryUpgrade success', async t => {
 			gotPing++;
 		})
 		.on('message', data => {
-			gotMsg++;
-			t.deepEqual(JSON.parse(data), msg);
+			gotMessage++;
+			t.same(JSON.parse(data), message);
 		});
 
-	await pEvent(ws, 'open');
+	await once(ws, 'open');
 
 	ws.ping();
-	await pEvent(ws, 'pong');
-	t.is(gotPong, 1);
+	await once(ws, 'pong');
+	t.equal(gotPong, 1);
 
-	cluster.send(msg);
-	await pEvent(ws, 'message');
-	t.is(gotMsg, 1);
+	cluster.send(message);
+	await once(ws, 'message');
+	t.equal(gotMessage, 1);
 
 	/* Needed to allow cluster[oninterval]() to execute */
 	cluster.start();
 	await delay(500);
 
-	t.is(Math.round(remote.inactiveTime / 1000), 0);
-	t.is(gotPing, 0);
+	t.equal(Math.round(remote.inactiveTime / 1000), 0);
+	t.equal(gotPing, 0);
 
 	await delay(5000);
-	t.is(gotPing, 0);
-	t.is(Math.round(remote.inactiveTime / 1000), 5);
+	t.equal(gotPing, 0);
+	t.equal(Math.round(remote.inactiveTime / 1000), 5);
 
 	await delay(1000);
-	t.is(gotPing, 1);
-	t.is(remote.inactiveTime, 0);
+	t.equal(gotPing, 1);
+	t.equal(remote.inactiveTime, 0);
 
 	cluster.stop();
-	t.true(cluster.stopping);
-	t.true(remote.stopping);
+	t.equal(cluster.stopping, true);
+	t.equal(remote.stopping, true);
 
 	ws.close();
 	httpd.close();
 });
 
-test('tryOutbound ping', async t => {
+t.test('tryOutbound ping', async t => {
 	const wss = new WebSocket.Server({
 		noServer: true,
 		clientTracking: false,
@@ -157,9 +153,9 @@ test('tryOutbound ping', async t => {
 	let testWS;
 	const httpdTest = createServer();
 	httpdTest.listen(0);
-	await pEvent(httpdTest, 'listening');
-	httpdTest.on('upgrade', (req, sock, head) => {
-		wss.handleUpgrade(req, sock, head, ws => {
+	await once(httpdTest, 'listening');
+	httpdTest.on('upgrade', (request, socket, head) => {
+		wss.handleUpgrade(request, socket, head, ws => {
 			testWS = ws;
 		});
 	});
@@ -180,16 +176,16 @@ test('tryOutbound ping', async t => {
 		gotPing++;
 	});
 
-	t.is(Math.round(remote.inactiveTime / 1000), 0);
-	t.is(gotPing, 0);
+	t.equal(Math.round(remote.inactiveTime / 1000), 0);
+	t.equal(gotPing, 0);
 
 	await delay(3000);
-	t.is(gotPing, 0);
-	t.is(Math.round(remote.inactiveTime / 1000), 3);
+	t.equal(gotPing, 0);
+	t.equal(Math.round(remote.inactiveTime / 1000), 3);
 
 	await delay(1000);
-	t.is(gotPing, 1);
-	t.is(remote.inactiveTime, 0);
+	t.equal(gotPing, 1);
+	t.equal(remote.inactiveTime, 0);
 
 	cluster.stop();
 	testWS.close();

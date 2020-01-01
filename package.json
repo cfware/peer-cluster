@@ -2,13 +2,16 @@
 	"name": "@cfware/peer-cluster",
 	"version": "0.2.2",
 	"description": "Websocket all-to-all connectivity cluster",
-	"main": "lib/peer-cluster.js",
+	"main": "lib/peer-cluster.mjs",
+	"exports": "./lib/peer-cluster.mjs",
 	"scripts": {
 		"release": "standard-version --sign",
-		"test": "xo && nyc ava"
+		"pretest": "cfware-lint .",
+		"test": "c8 -r none node test.mjs | tap-yaml-summary",
+		"posttest": "c8 report"
 	},
 	"engines": {
-		"node": ">=12"
+		"node": ">=13.2.0"
 	},
 	"author": "Corey Farrell",
 	"license": "MIT",
@@ -25,29 +28,10 @@
 		"ws": "^7.0.0"
 	},
 	"devDependencies": {
-		"@cfware/nyc": "^0.5.0",
-		"ava": "^2.0.0",
-		"babel-eslint": "^10.0.1",
-		"delay": "^4.2.0",
-		"esm": "^3.2.25",
-		"nyc": "^14.1.1",
-		"p-event": "^4.1.0",
+		"@cfware/lint": "^1.0.0",
+		"c8": "^7.0.0",
+		"libtap": "git://github.com/coreyfarrell/libtap#prefer-fs-rmdir-recursive",
 		"standard-version": "^7.0.0",
-		"xo": "^0.24.0"
-	},
-	"xo": {
-		"parser": "babel-eslint",
-		"env": {
-			"es6": true
-		},
-		"rules": {
-			"lines-between-class-members": [
-				"error",
-				"always",
-				{
-					"exceptAfterSingleLine": true
-				}
-			]
-		}
+		"tap-yaml-summary": "git://github.com/cfware/tap-yaml-summary#master"
 	}
 }
