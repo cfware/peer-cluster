@@ -10,8 +10,7 @@ Websocket all-to-all connectivity cluster.
 
 ### Install @cfware/peer-cluster
 
-This module requires node.js 12 or above with support for ESM modules.  This
-has only been tested/used with `esm`.
+This module requires node.js 13.2.0 or above.  This is only tested with native ES modules.
 
 ```sh
 npm i --save esm @cfware/peer-cluster
@@ -21,14 +20,14 @@ npm i --save esm @cfware/peer-cluster
 
 ```js
 import {createServer} from 'http';
+import {once} from 'events';
 
-import pEvent from 'p-event';
 import {PeerCluster} from '@cfware/peer-cluster';
 
 (async () => {
 	const httpd = createServer();
 	httpd.listen(0);
-	await pEvent(httpd, 'listening');
+	await once(httpd, 'listening');
 
 	const peerCluster = new PeerCluster({
 		peerID: 'server1',
@@ -40,15 +39,6 @@ import {PeerCluster} from '@cfware/peer-cluster';
 		cluster.tryUpgrade(req, sock, head);
 	});
 })();
-```
-
-## Running tests
-
-Tests are provided by xo and ava.
-
-```sh
-npm install
-npm test
 ```
 
 [npm-image]: https://img.shields.io/npm/v/@cfware/peer-cluster.svg
