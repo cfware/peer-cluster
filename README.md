@@ -35,9 +35,7 @@ import {PeerCluster} from '@cfware/peer-cluster';
 		respond404: true
 	});
 
-	httpd.on('upgrade', (req, sock, head) => {
-		cluster.tryUpgrade(req, sock, head);
-	});
+	httpd.on('upgrade', cluster.tryUpgrade);
 })();
 ```
 

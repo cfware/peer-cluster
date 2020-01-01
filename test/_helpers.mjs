@@ -18,7 +18,9 @@ export async function createCluster(t, pathname, peerID, moreSettings = {}) {
 		...moreSettings
 	});
 	httpd.on('upgrade', (request, socket, head) => {
-		t.equal(cluster.tryUpgrade(request, socket, head), true);
+		// Verify that tryUpgrade is bound to cluster
+		const {tryUpgrade} = cluster;
+		t.equal(tryUpgrade(request, socket, head), true);
 	});
 
 	return {cluster, httpd};
