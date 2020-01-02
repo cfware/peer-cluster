@@ -2,8 +2,8 @@
 	"name": "@cfware/peer-cluster",
 	"version": "0.2.2",
 	"description": "Websocket all-to-all connectivity cluster",
-	"main": "lib/peer-cluster.mjs",
-	"exports": "./lib/peer-cluster.mjs",
+	"main": "lib/index.mjs",
+	"exports": "./lib/index.mjs",
 	"scripts": {
 		"release": "standard-version --sign",
 		"pretest": "cfware-lint .",
