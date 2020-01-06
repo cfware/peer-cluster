@@ -28,10 +28,10 @@
 		"ws": "^7.0.0"
 	},
 	"devDependencies": {
-		"@cfware/lint": "^1.0.0",
+		"@cfware/lint": "^1.0.1",
 		"c8": "^7.0.0",
-		"libtap": "git://github.com/coreyfarrell/libtap#prefer-fs-rmdir-recursive",
+		"libtap": "^0.1.0",
 		"standard-version": "^7.0.0",
-		"tap-yaml-summary": "git://github.com/cfware/tap-yaml-summary#master"
+		"tap-yaml-summary": "^0.1.0"
 	}
 }
