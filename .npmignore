@@ -1,7 +1,9 @@
 *.tgz
+nyc.config.cjs
+.nyc_output
 coverage
 package
-.travis.yml
+.github
 tap-snapshots
 test
 test.mjs

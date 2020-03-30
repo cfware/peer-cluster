@@ -14,5 +14,9 @@ for (const file of readdirSync(testDirectory)) {
 		continue;
 	}
 
-	t.spawn(process.execPath, [path.join(testDirectory, file)], file);
+	t.spawn(
+		process.execPath,
+		['--experimental-loader', '@istanbuljs/esm-loader-hook', path.join(testDirectory, file)],
+		file
+	);
 }

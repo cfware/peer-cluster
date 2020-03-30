@@ -1,6 +1,6 @@
 # @cfware/peer-cluster
 
-[![Travis CI][travis-image]][travis-url]
+![Tests][tests-status]
 [![Greenkeeper badge][gk-image]](https://greenkeeper.io/)
 [![NPM Version][npm-image]][npm-url]
 [![NPM Downloads][downloads-image]][downloads-url]
@@ -13,7 +13,7 @@ Websocket all-to-all connectivity cluster.
 This module requires node.js 13.2.0 or above.  This is only tested with native ES modules.
 
 ```sh
-npm i --save esm @cfware/peer-cluster
+npm i @cfware/peer-cluster
 ```
 
 ## Usage
@@ -41,8 +41,7 @@ import {PeerCluster} from '@cfware/peer-cluster';
 
 [npm-image]: https://img.shields.io/npm/v/@cfware/peer-cluster.svg
 [npm-url]: https://npmjs.org/package/@cfware/peer-cluster
-[travis-image]: https://travis-ci.org/cfware/peer-cluster.svg?branch=master
-[travis-url]: https://travis-ci.org/cfware/peer-cluster
+[tests-status]: https://github.com/cfware/peer-cluster/workflows/Tests/badge.svg
 [gk-image]: https://badges.greenkeeper.io/cfware/peer-cluster.svg
 [downloads-image]: https://img.shields.io/npm/dm/@cfware/peer-cluster.svg
 [downloads-url]: https://npmjs.org/package/@cfware/peer-cluster
