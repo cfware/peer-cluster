@@ -5,9 +5,9 @@ import {once} from 'events';
 import t from 'libtap';
 import WebSocket from 'ws';
 
-import {outboundWS} from '../lib/protected-symbols.mjs';
+import {outboundWS} from '../lib/protected-symbols.js';
 
-import {createCluster, createClusters, stopClusters} from './_helpers.mjs';
+import {createCluster, createClusters, stopClusters} from './_helpers.js';
 
 const delay = promisify(setTimeout);
 

@@ -1,8 +1,8 @@
 import t from 'libtap';
 
-import {assertNonEmptyString} from '../lib/assert-non-empty-string.mjs';
+import {assertNonEmptyString} from '../lib/assert-non-empty-string.js';
 
-import {assertInfo} from './_helpers.mjs';
+import {assertInfo} from './_helpers.js';
 
 t.test('not a string', async t => {
 	t.throws(() => assertNonEmptyString(undefined, 'field1'), assertInfo('field1'));

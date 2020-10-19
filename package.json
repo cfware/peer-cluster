@@ -2,20 +2,8 @@
 	"name": "@cfware/peer-cluster",
 	"version": "0.2.2",
 	"description": "Websocket all-to-all connectivity cluster",
-	"main": "lib/index.mjs",
-	"exports": "./lib/index.mjs",
-	"scripts": {
-		"pretest": "cfware-lint .",
-		"tests-only": "nyc -s node --experimental-loader @istanbuljs/esm-loader-hook test.mjs | tap-yaml-summary",
-		"test": "npm run -s tests-only",
-		"posttest": "nyc report --check-coverage"
-	},
-	"engines": {
-		"node": ">=13.2.0"
-	},
 	"author": "Corey Farrell",
 	"license": "MIT",
-	"keywords": [],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/cfware/peer-cluster.git"
@@ -24,15 +12,28 @@
 		"url": "https://github.com/cfware/peer-cluster/issues"
 	},
 	"homepage": "https://github.com/cfware/peer-cluster#readme",
+	"type": "module",
+	"main": "lib/index.js",
+	"exports": "./lib/index.js",
+	"engines": {
+		"node": ">=14.0.0"
+	},
+	"scripts": {
+		"pretest": "cfware-lint .",
+		"tests-only": "nyc -s node --experimental-loader @istanbuljs/esm-loader-hook test.js | tap-yaml-summary",
+		"test": "npm run -s tests-only",
+		"posttest": "nyc report --check-coverage"
+	},
 	"dependencies": {
-		"ws": "^7.0.0"
+		"@cfware/symbols": "^0.1.0",
+		"ws": "^7.3.1"
 	},
 	"devDependencies": {
-		"@cfware/lint": "^1.0.1",
+		"@cfware/lint": "^2.0.3",
 		"@cfware/nyc": "^0.7.0",
-		"@istanbuljs/esm-loader-hook": "^0.1.0",
+		"@istanbuljs/esm-loader-hook": "^0.1.2",
 		"libtap": "^0.3.0",
-		"nyc": "^15.0.0",
+		"nyc": "^15.1.0",
 		"tap-yaml-summary": "^0.1.0"
 	}
 }

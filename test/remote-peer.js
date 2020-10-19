@@ -1,9 +1,9 @@
 import t from 'libtap';
 
-import {RemotePeer} from '../lib/remote-peer.mjs';
-import {peerStop} from '../lib/protected-symbols.mjs';
+import {RemotePeer} from '../lib/remote-peer.js';
+import {peerStop} from '../lib/protected-symbols.js';
 
-import {assertInfo} from './_helpers.mjs';
+import {assertInfo} from './_helpers.js';
 
 t.test('errors', async t => {
 	t.throws(() => new RemotePeer(null), {

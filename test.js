@@ -5,7 +5,7 @@ import {cpus} from 'os';
 
 import t from 'libtap';
 
-const testDirectory = path.join(path.dirname(fileURLToPath(import.meta.url)), 'test');
+const testDirectory = fileURLToPath(new URL('test', import.meta.url));
 
 t.jobs = cpus().length;
 

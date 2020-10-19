@@ -1,7 +1,7 @@
 import t from 'libtap';
 
-import {BasePeer} from '../lib/base-peer.mjs';
-import {peerStop} from '../lib/protected-symbols.mjs';
+import {BasePeer} from '../lib/base-peer.js';
+import {peerStop} from '../lib/protected-symbols.js';
 
 t.test('lifecycle', async t => {
 	const cluster = {};

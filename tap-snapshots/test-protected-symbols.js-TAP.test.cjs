@@ -5,7 +5,7 @@
  * Make sure to inspect the output below.  Do not ignore changes!
  */
 'use strict'
-exports[`test/protected-symbols.mjs TAP export > must match snapshot 1`] = `
+exports[`test/protected-symbols.js TAP export > must match snapshot 1`] = `
 Array [
   "checkInbound",
   "oninterval",

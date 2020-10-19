@@ -1,7 +1,7 @@
 import t from 'libtap';
 
-import {SelfPeer} from '../lib/self-peer.mjs';
-import {peerStop} from '../lib/protected-symbols.mjs';
+import {SelfPeer} from '../lib/self-peer.js';
+import {peerStop} from '../lib/protected-symbols.js';
 
 t.test('lifecycle', async t => {
 	const cluster = {peerID: 'local', origin: 'ws://localhost/'};

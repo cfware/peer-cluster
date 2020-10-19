@@ -1,7 +1,7 @@
 *.tgz
-nyc.config.cjs
+nyc.config.js
 coverage
 .github
 tap-snapshots
 test
-test.mjs
+test.js

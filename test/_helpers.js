@@ -1,7 +1,7 @@
 import {once} from 'events';
 import {createServer} from 'http';
 
-import {PeerCluster} from '../lib/peer-cluster.mjs';
+import {PeerCluster} from '../lib/peer-cluster.js';
 
 export function assertInfo(fieldname) {
 	return new TypeError(`${fieldname} must be non-empty a string`);

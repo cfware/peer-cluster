@@ -1,6 +1,6 @@
 import t from 'libtap';
 
-import {keepExisting} from '../lib/keep-existing.mjs';
+import {keepExisting} from '../lib/keep-existing.js';
 
 t.test('results', async t => {
 	const srvOrder = [

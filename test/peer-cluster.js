@@ -4,10 +4,10 @@ import {once} from 'events';
 import t from 'libtap';
 import WebSocket from 'ws';
 
-import {PeerCluster} from '../lib/peer-cluster.mjs';
-import {oninterval} from '../lib/protected-symbols.mjs';
+import {PeerCluster} from '../lib/peer-cluster.js';
+import {oninterval} from '../lib/protected-symbols.js';
 
-import {assertInfo, createCluster} from './_helpers.mjs';
+import {assertInfo, createCluster} from './_helpers.js';
 
 const delay = promisify(setTimeout);
 
